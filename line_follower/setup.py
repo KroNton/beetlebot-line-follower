@@ -23,6 +23,7 @@ setup(
             'line_follower_node = line_follower.line_follower:main',
             'convert_ros_image_to_cv = line_follower.convert_ros_image_to_cv:main',
             'yellow_binary_mask = line_follower.yellow_binary_mask:main',
+            'calculate_centroid = line_follower.calculate_centroid:main',
         ],
     },
 )
