@@ -66,7 +66,11 @@ class ImageSubscriber(Node):
 
         yellow_segmented_image = cv2.bitwise_and(current_frame, current_frame, mask=yellow_mask)
 
-        line_centroid = self.get_contour_data(yellow_mask)
+        line_centroid = self.get_contour_data(yellow_mask,current_frame)
+        contours, _ = cv2.findContours(yellow_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+        cv2.drawContours(current_frame, contours, -1, (0, 255, 0), 2)  # Green color, thickn
+        largest_contour = max(contours, key=cv2.contourArea)
+        cv2.drawContours(current_frame, [largest_contour], -1, (255, 0, 0), 2)  # Blue color, thickness=2
 
         # Display the segmented image with line centroid
 
@@ -81,7 +85,7 @@ class ImageSubscriber(Node):
         cv2.waitKey(1)
 
 
-    def get_contour_data(self, mask):
+    def get_contour_data(self, mask,current_frame):
 
         """
 
@@ -100,7 +104,6 @@ class ImageSubscriber(Node):
         contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
 
 
-
         line = {}
 
 
@@ -116,6 +119,8 @@ class ImageSubscriber(Node):
                 line['x'] = int(M["m10"]/M["m00"])
 
                 line['y'] = int(M["m01"]/M["m00"])
+
+
 
         return (line)
 
